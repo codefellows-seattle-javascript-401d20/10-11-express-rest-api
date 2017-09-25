@@ -1,0 +1,20 @@
+{
+  "name": "lab-ron",
+  "version": "0.0.1",
+  "description": "lab 11 & 12, learning express",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test-watch": "jest --watch -i",
+    "test": "jest -i --coverage"
+  },
+  "keywords": [],
+  "author": "Ron Barrantes",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.7.2",
+    "jest": "^21.1.0"
+  }
+}
