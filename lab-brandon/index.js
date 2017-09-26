@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
 // load environment
-require('dotenv').config()
+require('dotenv').config();
 // start server
-require('./lib/server.js').start()
+require('./lib/server.js').start();

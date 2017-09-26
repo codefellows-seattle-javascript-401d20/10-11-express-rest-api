@@ -12,6 +12,7 @@
     "test":"jest -i --coverage",
     "dbon":"mkdir -p ./db && mongod --dbpath ./db",
     "dboff":"killall mongod",
+    "watch":"nodemon index.js",
   },
   "keywords": [],
   "author": "",
