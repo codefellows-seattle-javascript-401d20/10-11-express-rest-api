@@ -19,6 +19,9 @@ const bookMockCreate = () => {
   }).save();
 };
 
+let mockManyBooks = (num) => {
+  return Promise.all(new Array(num).fill(0).map(() => bookMockCreate()))
+}
 describe('/api/books', () => {
   beforeAll(server.start);
   afterAll(server.stop);

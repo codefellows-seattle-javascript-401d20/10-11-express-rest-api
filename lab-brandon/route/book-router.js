@@ -62,12 +62,25 @@ bookRouter.get('/api/notes', (req, res, next) => {
   if(isNaN(page)) page = 0
   page = page < 0 ? 0 : page
 
-  let result
+  let booksCache
   Book.find({})
   .skip(page * 100)
   .limit(100)
   .then(books =>{
-    result = books
+    booksCache = books
     return Book.find({}).count()
+  })
+  .then(count => {
+    let result = {
+      count,
+      data: booksCache,
+    }
+
+    let lastPage = Math.floor(count / 100)
+
+    res.link('next', `http://localhost/api/books?page=${page+1}`)
+    res.link('prev', `http://localhost/api/books?page=${page<1 ? 0 : page - 1}`)
+    res.link('last', `http://localhost/api/books?page=${lastPage}`)
+    res.json(result)
   })
 })
