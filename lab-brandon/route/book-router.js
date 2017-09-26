@@ -54,13 +54,9 @@ bookRouter.delete('/api/books/:id', (req, res, next) => {
   Book.findByIdAndRemove(req.params.id)
   .then(book => {
     if(!book){
-    //on success
-      return res.sendStatus(204);
-    }
-    if(!req.params.id)
-      return res.sendStatus(400);
-    res.json(book);
-
+      throw httpErrors(404, 'book not found');
+    res.sendStatus(204);
+  
   });
   .catch(err => {
     console.error(err);

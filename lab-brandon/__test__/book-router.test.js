@@ -85,10 +85,8 @@ describe('/api/books', () => {
 });
 describe('DELETE /api/books', () => {
   test('should respond with a book and 204 status', () => {
-    let tempBook
     return bookMockCreate()
     .then(book => {
-      tempBook = book
       return superagent.delete(`${apiURL}/api/books/${book._id}`);
     })
     .then(res => {
