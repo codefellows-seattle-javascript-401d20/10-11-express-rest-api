@@ -9,7 +9,7 @@ const bookRouter = module.exports = new Router()
 bookRouter.post('/api/books', jsonParser, (req, res, next) => {
   // create a book using the parsed body
   // and respond to the client
-  if(!req.body.title || !req.body.content)
+  if(!req.body.title || !req.body.content || !req.body.author)
     return res.sendStatus(400)
 
   new Book(req.body).save()
@@ -53,9 +53,15 @@ bookRouter.get('/api/books/:id', (req, res, next) => {
 bookRouter.delete('/api/books/:id', (req, res, next) => {
   Book.findById(req.params.id)
   .then(book => {
-    if(!book)
-      return res.sendStatus(404)
+    if(book){
+      book.findByID(req.params.id).remove()
+    //on success
+      return res.sendStatus(204)
+    }
+    if(!req.params.id)
+      return res.sendStatus(400)
     res.json(book)
+
   })
   .catch(err => {
     console.error(err)
