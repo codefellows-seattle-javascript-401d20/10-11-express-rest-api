@@ -10,11 +10,13 @@ const app = express();
 let isOn = false;
 let http = null;
 
+app.use(require('./logger-middleware.js'));
+
 app.use(require('../route/sandwich-router.js'));
 
-app.all('*', (req, res) => {
-  res.sendStatus(404);
-});
+app.all('*', (req, res) => res.sendStatus(404) );
+
+app.use(require('./error-middleware.js'));
 
 module.exports = {
   start: () => {
