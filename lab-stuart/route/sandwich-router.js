@@ -17,6 +17,21 @@ sandwichRouter.post('/api/sandwiches', jsonParser, (req, res, next) => {
   });
 });
 
+sandwichRouter.get('/api/sandwiches', (req, res, next) => {
+  Sandwich.find()
+  .then(sandwiches => {
+    if(!sandwiches)
+      return res.sendStatus(404);
+    res.json(sandwiches);
+  })
+  .catch(err => {
+    console.error(err);
+    if(err.message.indexOf('Cast to ObjectId failed') > -1)
+      return res.sendStatus(404);
+    res.sendStatus(500);
+  });
+});
+
 sandwichRouter.get('/api/sandwiches/:id', (req, res, next) => {
   Sandwich.findById(req.params.id)
   .then(sandwich => {
@@ -28,6 +43,22 @@ sandwichRouter.get('/api/sandwiches/:id', (req, res, next) => {
     console.error(err);
     if(err.message.indexOf('Cast to ObjectId failed') > -1)
       return res.sendStatus(404);
+    res.sendStatus(500);
+  });
+});
+
+sandwichRouter.delete('/api/sandwiches/:id', (req, res, next) => {
+  Sandwich.deleteOne({_id: req.params.id.toString()})
+  .then(sandwich => {
+    if(!sandwich)
+      return res.sendStatus(404);
+    console.log(`sandwich ${req.params.id} was successfully deleted.`);
+    res.sendStatus(204);
+  })
+  .catch(err => {
+    console.error(err);
+    if(err.message.indexOf('Cast to ObjectId failed') > -1)
+      return res.sendStatus(400);
     res.sendStatus(500);
   });
 });
