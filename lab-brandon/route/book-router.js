@@ -21,6 +21,20 @@ bookRouter.post('/api/books', jsonParser, (req, res, next) => {
 })
 
 // router paramiters
+bookRouter.get('/api/books', (req, res, next) => {
+  Book.findById(req.params.id)
+  .then(book => {
+    if(!book)
+      return res.sendStatus(404)
+    res.json(book)
+  })
+  .catch(err => {
+    console.error(err)
+    if(err.message.indexOf('Cast to ObjectId failed') > -1)
+      return res.sendStatus(404)
+    res.sendStatus(500)
+  })
+})
 bookRouter.get('/api/books/:id', (req, res, next) => {
   Book.findById(req.params.id)
   .then(book => {
