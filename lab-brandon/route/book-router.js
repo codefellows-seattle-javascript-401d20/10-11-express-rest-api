@@ -56,12 +56,7 @@ bookRouter.delete('/api/books/:id', (req, res, next) => {
     if(!book){
       throw httpErrors(404, 'book not found');
     res.sendStatus(204);
-  
+
   });
-  .catch(err => {
-    console.error(err);
-    if(err.message.indexOf('book does not exist') > -1)
-      return res.sendStatus(404);
-    res.sendStatus(500);
-  });
+  .catch(next);
 });

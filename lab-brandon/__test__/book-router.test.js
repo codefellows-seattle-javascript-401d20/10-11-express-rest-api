@@ -83,7 +83,7 @@ describe('/api/books', () => {
     });
   });
 });
-describe('DELETE /api/books', () => {
+describe('DELETE /api/books/:id', () => {
   test('should respond with a book and 204 status', () => {
     return bookMockCreate()
     .then(book => {
@@ -99,6 +99,37 @@ describe('DELETE /api/books', () => {
     .then(Promise.reject)
     .catch(res => {
       expect(res.status).toEqual(404);
+    });
+  });
+  describe('PUT /api/books/:id', () => {
+    test('should update note and respond with 200', () =>{
+      let tempBook
+      return bookMockCreate
+      .then(book => {
+        tempBook = book
+        return superagent.put(`${apiURL}/api/books/${books._id}`)
+        .send({title:})
+      })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body._id).toEqual(tempBook._id.toString());
+        expect(res.body.title).toEqual(tempBook.title);
+        expect(res.body.author).toEqual(tempBook.author);
+        expect(res.body.content).toEqual(tempBook.content);
+      });
+    });
+  });
+
+    test('should respond with a 400 status', () => {
+      let mockBook = {
+        content: faker.lorem.words(100),
+      }
+      return superagent.post(`${apiURL}/api/books`)
+      .send(mockBook)
+      .then(Promise.reject)
+      .catch(res => {
+        expect(res.status).toEqual(400);
+      });
     });
   });
 });
