@@ -24,7 +24,7 @@ describe('/api/books', () => {
   afterEach(() => Book.remove({}))
 
   describe('POST /api/books', () => {
-    test('should respond with a note and 200 status', () => {
+    test('should respond with a book and 200 status', () => {
       let tempBook = {
         title: faker.lorem.words(10),
         author: faker.lorem.words(8),
@@ -57,12 +57,12 @@ describe('/api/books', () => {
   })
 
   describe('GET /api/books', () => {
-    test('should respond with a note and 200 status', () => {
+    test('should respond with a book and 200 status', () => {
       let tempBook
       return bookMockCreate()
-      .then(note => {
-        tempBook = note
-        return superagent.get(`${apiURL}/api/books/${note._id}`)
+      .then(book => {
+        tempBook = book
+        return superagent.get(`${apiURL}/api/books/${book._id}`)
       })
       .then(res => {
         expect(res.status).toEqual(200)
@@ -80,6 +80,32 @@ describe('/api/books', () => {
       .catch(res => {
         expect(res.status).toEqual(404)
       })
+    })
+  })
+})
+describe('DELETE /api/books', () => {
+  test('should respond with a book and 200 status', () => {
+    let tempBook
+    return bookMockCreate()
+    .then(book => {
+      tempBook = book
+      return superagent.get(`${apiURL}/api/books/${book._id}`)
+    })
+    .then(res => {
+      expect(res.status).toEqual(200)
+      expect(res.body._id).toEqual(tempBook._id.toString())
+      expect(res.body.timestamp).toBeTruthy()
+      expect(res.body.title).toEqual(tempBook.title)
+      expect(res.body.author).toEqual(tempBook.author)
+      expect(res.body.content).toEqual(tempBook.content)
+    })
+  })
+
+  test('should respond with 404 status', () => {
+    return superagent.get(`${apiURL}/api/books/lilwayne`)
+    .then(Promise.reject)
+    .catch(res => {
+      expect(res.status).toEqual(404)
     })
   })
 })
