@@ -50,10 +50,6 @@ videoGameRouter.get('/api/videogames', (req, res) => {
 
 videoGameRouter.delete('/api/videogames/:id', (req, res) => {
 
-  if(!req.params.id)
-    return res.sendStatus(400);
-
-  console.log(`Look! ID ----> ${req.params.id}`);
   VideoGame.findByIdAndRemove(req.params.id)
     .then(() => res.sendStatus(204))
     .catch(err => {
@@ -67,4 +63,25 @@ videoGameRouter.delete('/api/videogames/:id', (req, res) => {
 videoGameRouter.delete('/api/videogames', (req, res) => {
   // No delete all feature!
   return res.sendStatus(400);
+});
+
+videoGameRouter.put('/api/videogames/:id', jsonParser, (req, res) => {
+
+  if(!req.body.title || !req.body.console || !req.body.genre)
+    return res.sendStatus(400);
+
+  req.body.timestamp = new Date();
+
+  VideoGame.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then((videoGame) => {
+      if(!videoGame)
+        return res.sendStatus(404);
+      res.json(videoGame);
+    })
+    .catch(err => {
+      console.error(err);
+      if(err.message.indexOf('Cast to ObjectId failed') > -1)
+        return res.sendStatus(404);
+      res.sendStatus(500);
+    });
 });

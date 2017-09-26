@@ -35,7 +35,6 @@ describe('/api/videogames', () => {
         .send(tempVideoGame)
         .then(res => {
           expect(res.status).toEqual(200);
-          console.log('res.body', res.body);
           expect(res.body._id).toBeTruthy();
           expect(res.body.timestamp).toBeTruthy();
           expect(res.body.title).toEqual(tempVideoGame.title);
@@ -120,6 +119,56 @@ describe('/api/videogames', () => {
 
     test('should respond with 400 status', () => {
       return superagent.delete(`${apiURL}/api/videogames/`)
+        .then(Promise.reject)
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+    });
+  });
+
+  describe('PUT /api/videogames', () => {
+    test('should respond with a 200 status', () => {
+      let tempVideoGame = {
+        title: faker.lorem.words(10),
+        genre: faker.lorem.words(10),
+        console: faker.lorem.words(10),
+      };
+      return videogameMockCreate()
+        .then(videogame => {
+          return superagent.put(`${apiURL}/api/videogames/${videogame._id}`)
+            .send(tempVideoGame);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body._id).toBeTruthy();
+          expect(res.body.timestamp).toBeTruthy();
+          expect(res.body.title).toEqual(tempVideoGame.title);
+          expect(res.body.content).toEqual(tempVideoGame.content);
+        });
+    });
+
+    test('should respond with 404 status', () => {
+      let tempVideoGame = {
+        title: faker.lorem.words(10),
+        genre: faker.lorem.words(10),
+        console: faker.lorem.words(10),
+      };
+      return superagent.put(`${apiURL}/api/videogames/helloworld`)
+        .send(tempVideoGame)
+        .then(Promise.reject)
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+
+    test('should respond with 400 status', () => {
+      let tempVideoGame = {
+        title: faker.lorem.words(10),
+        genre: faker.lorem.words(10),
+        console: faker.lorem.words(10),
+      };
+      return superagent.delete(`${apiURL}/api/videogames/`)
+        .send(tempVideoGame)
         .then(Promise.reject)
         .catch(res => {
           expect(res.status).toEqual(400);
