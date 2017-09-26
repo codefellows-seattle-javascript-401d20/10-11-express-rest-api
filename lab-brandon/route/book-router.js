@@ -56,3 +56,18 @@ bookRouter.put('/api/books/:id', jsonParser, (req, res, next) => {
   })
   .catch(next)
 });
+bookRouter.get('/api/notes', (req, res, next) => {
+  let {page='0'} = req.query
+  page = Number(page)
+  if(isNaN(page)) page = 0
+  page = page < 0 ? 0 : page
+
+  let result
+  Book.find({})
+  .skip(page * 100)
+  .limit(100)
+  .then(books =>{
+    result = books
+    return Book.find({}).count()
+  })
+})
