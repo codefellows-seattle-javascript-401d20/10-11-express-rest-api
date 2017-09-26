@@ -74,6 +74,22 @@ describe('/api/videogames', () => {
         });
     });
 
+    test('should respond with an array of all videogames and 200 status', () => {
+      let tempVideoGame;
+      return videogameMockCreate()
+        .then(videogame => {
+          tempVideoGame = videogame;
+          return superagent.get(`${apiURL}/api/videogames`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(200);
+          expect(res.body[0]._id).toEqual(tempVideoGame._id.toString());
+          expect(res.body[0].timestamp).toBeTruthy();
+          expect(res.body[0].title).toEqual(tempVideoGame.title);
+          expect(res.body[0].content).toEqual(tempVideoGame.content);
+        });
+    });
+
     test('should respond with 404 status', () => {
       return superagent.get(`${apiURL}/api/videogames/helloworld`)
         .then(Promise.reject)
@@ -95,10 +111,18 @@ describe('/api/videogames', () => {
     });
 
     test('should respond with 404 status', () => {
-      return superagent.get(`${apiURL}/api/videogames/helloworld`)
+      return superagent.delete(`${apiURL}/api/videogames/helloworld`)
         .then(Promise.reject)
         .catch(res => {
           expect(res.status).toEqual(404);
+        });
+    });
+
+    test('should respond with 400 status', () => {
+      return superagent.delete(`${apiURL}/api/videogames/`)
+        .then(Promise.reject)
+        .catch(res => {
+          expect(res.status).toEqual(400);
         });
     });
   });
