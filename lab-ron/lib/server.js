@@ -1,14 +1,21 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose');
+
+mongoose.Promise = Promise;
+mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 const app = express();
-
 let isOn = false;
 let http = null;
 
 
-// server running need to add mongo
+app.use(require('../route/reminder-router.js'));
+
+app.all('*', (req, res) => {
+  res.sendStatus(404);
+});
 
 module.exports = {
   start: () => {
