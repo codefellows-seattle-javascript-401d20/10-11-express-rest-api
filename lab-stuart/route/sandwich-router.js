@@ -2,6 +2,7 @@
 
 const {Router} = require('express');
 const jsonParser = require('body-parser').json();
+const httpErrors = require('httperrors');
 
 const Sandwich = require('../model/sandwich.js');
 const sandwichRouter = module.exports = new Router();

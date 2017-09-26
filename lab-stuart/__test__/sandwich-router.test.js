@@ -60,7 +60,7 @@ describe('/api/sandwiches', () => {
   });
 
   describe('GET /api/sandwiches', () => {
-    test.only('should return 100 sandwiches', () => {
+    test('should return 100 sandwiches', () => {
       return mockManySandwiches(1000)
       .then(tempSandwiches => {
         return superagent.get(`${apiURL}/api/sandwiches`);
@@ -111,7 +111,7 @@ describe('/api/sandwiches', () => {
       })
       .then(res => {
         expect(res.status).toEqual(200);
-        expect(res.body.bread).toEqual('zucchini');
+        expect(res.body.bread).toEqual(tempSandwich.bread);
         expect(res.body.cheese).toEqual(tempSandwich.cheese);
         expect(res.body._id).toEqual(tempSandwich._id.toString());
       });
