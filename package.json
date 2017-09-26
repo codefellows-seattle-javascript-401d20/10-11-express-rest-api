@@ -4,7 +4,11 @@
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) Lab 11: Express and Mongo REST API ======",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "start": "node index.js",
+    "test": "jest -i --coverage",
+    "dbon": "mkdir -p ./db && mongod --dbpath ./db",
+    "dboff": "killall mongod"
   },
   "repository": {
     "type": "git",
@@ -19,7 +23,17 @@
   "homepage": "https://github.com/Mackoyokcam/11-12-express-rest-api#readme",
   "devDependencies": {
     "eslint": "^4.7.2",
+    "faker": "^4.1.0",
     "jest": "^21.1.0",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "superagent": "^3.6.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.5",
+    "mongoose": "^4.11.13",
+    "morgan": "^1.8.2"
   }
 }
