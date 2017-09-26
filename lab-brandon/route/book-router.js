@@ -14,10 +14,7 @@ bookRouter.post('/api/books', jsonParser, (req, res, next) => {
 
   new Book(req.body).save()
   .then(book => res.json(book))
-  .catch(err => {
-    console.error('__SERVER_ERROR__', err);
-    res.sendStatus(500);
-  });
+  .catch(next);
 });
 
 // router paramiters
@@ -29,12 +26,7 @@ bookRouter.get('/api/books', (req, res, next) => {
       return res.sendStatus(404);
     res.json(book);
   });
-  .catch(err => {
-    console.error(err)
-    if(err.message.indexOf('Cast to ObjectId failed') > -1)
-      return res.sendStatus(404);
-    res.sendStatus(500);
-  });
+  .catch(next);
 });
 bookRouter.get('/api/books/:id', (req, res, next) => {
   Book.findById(req.params.id)
@@ -43,13 +35,8 @@ bookRouter.get('/api/books/:id', (req, res, next) => {
       return res.sendStatus(404)
     res.json(book)
   })
-  .catch(err => {
-    console.error(err)
-    if(err.message.indexOf('Cast to ObjectId failed') > -1)
-      return res.sendStatus(404)
-    res.sendStatus(500)
-  })
-})
+  .catch(next)
+});
 bookRouter.delete('/api/books/:id', (req, res, next) => {
   Book.findByIdAndRemove(req.params.id)
   .then(book => {
@@ -59,4 +46,13 @@ bookRouter.delete('/api/books/:id', (req, res, next) => {
 
   });
   .catch(next);
+
+});
+bookRouter.put('/api/books/:id', jsonParser, (req, res, next) => {
+  let options = {runValidators: true, new: true}
+  Book.findByIdAndUpdate(req.params.id, req.body, options)
+  .then(book => {
+    if(!book) throw httpErrors(404, 'book not found')
+  })
+  .catch(next)
 });

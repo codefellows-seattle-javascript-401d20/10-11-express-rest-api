@@ -14,6 +14,7 @@ const apiURL = `http://localhost:${process.env.PORT}`;
 const bookMockCreate = () => {
   return new Book({
     title: faker.lorem.words(10),
+    author: faker.lorem.words(8),
     content: faker.lorem.words(100),
   }).save();
 };
@@ -119,17 +120,5 @@ describe('DELETE /api/books/:id', () => {
       });
     });
   });
-
-    test('should respond with a 400 status', () => {
-      let mockBook = {
-        content: faker.lorem.words(100),
-      }
-      return superagent.post(`${apiURL}/api/books`)
-      .send(mockBook)
-      .then(Promise.reject)
-      .catch(res => {
-        expect(res.status).toEqual(400);
-      });
-    });
   });
 });
