@@ -21,6 +21,7 @@ bookRouter.post('/api/books', jsonParser, (req, res, next) => {
 })
 
 // router paramiters
+// single book array
 bookRouter.get('/api/books', (req, res, next) => {
   Book.findById(req.params.id)
   .then(book => {
@@ -58,7 +59,7 @@ bookRouter.delete('/api/books/:id', (req, res, next) => {
   })
   .catch(err => {
     console.error(err)
-    if(err.message.indexOf('Cast to ObjectId failed') > -1)
+    if(err.message.indexOf('book does not exist') > -1)
       return res.sendStatus(404)
     res.sendStatus(500)
   })
