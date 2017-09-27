@@ -22,7 +22,6 @@ describe('/api/reminders', () => {
   afterAll(server.stop);
   afterEach(() => Reminder.remove({}));
 
-
   describe('POST /api/reminders', () => {
 
     test('should respond with a 400 status', () => {

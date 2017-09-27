@@ -10,12 +10,13 @@ const app = express();
 let isOn = false;
 let http = null;
 
+app.use(require('./logger-middleware.js'));
 
 app.use(require('../route/reminder-router.js'));
 
-app.all('*', (req, res) => {
-  res.sendStatus(404);
-});
+app.all('*', (req, res) =>  res.sendStatus(404));
+
+app.use(require('./error-middleware'));
 
 module.exports = {
   start: () => {
@@ -44,3 +45,5 @@ module.exports = {
     });
   },
 };
+
+
