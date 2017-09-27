@@ -2,14 +2,14 @@
 
 const {Router} = require('express');
 const jsonParser = require('body-parser').json();
-const httpErrors = require('httperrors');
+const httpErrors = require('http-errors');
 
 const Sandwich = require('../model/sandwich.js');
 const sandwichRouter = module.exports = new Router();
 
 sandwichRouter.post('/api/sandwiches', jsonParser, (req, res, next) => {
   if(!req.body.bread || !req.body.cheese || !req.body.spread)
-    next(httpErrors(400, 'bread, cheese, and spread are required'));
+    return next(httpErrors(400, 'bread, cheese, and spread are required'));
   new Sandwich(req.body).save()
   .then(sandwich => res.json(sandwich))
   .catch(next);
