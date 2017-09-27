@@ -33,7 +33,7 @@ bookRouter.get('/api/books/:id', (req, res, next) => {
   Book.findById(req.params.id)
     .then(book => {
       if(!book)
-        throw httpErrors(404, 'Book not found');
+        throw httpErrors(404, 'book not found');
       res.json(book);
     })
     .catch(next);
