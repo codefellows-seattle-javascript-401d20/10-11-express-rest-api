@@ -90,7 +90,7 @@ describe('/api/books', () => {
     // GET: test 404, it should respond with 'not found'
     // for valid requests made with an id that was not found
     test('should respond with 404 status', () => {
-      return superagent.get(`${apiURL}/api/notes/hihihi`)
+      return superagent.get(`${apiURL}/api/books/hihihi`)
         .then(Promise.reject)
         .catch(res => {
           expect(res.status).toEqual(404);
@@ -111,7 +111,7 @@ describe('/api/books', () => {
     });
 
     test('should respond with a 404', () => {
-      return superagent.delete(`${apiURL}/api/notes/hahaha`)
+      return superagent.delete(`${apiURL}/api/books/hahaha`)
         .then(Promise.reject)
         .catch(res => {
           expect(res.status).toEqual(404);
