@@ -18,7 +18,6 @@ const bookMockCreate = () => {
     content: faker.lorem.words(100),
   }).save();
 };
-
 let mockManyBooks = (num) => {
   return Promise.all(new Array(num).fill(0).map(() => bookMockCreate()));
 };
@@ -88,6 +87,19 @@ describe('/api/books', () => {
     });
   });
 });
+describe('GET /api/books', () => {
+  test('should return 100 books', () => {
+    return mockManyBooks(1000)
+      .then(tempBook => {
+        return superagent.get(`${apiURL}/api/books`);
+      })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body.count).toEqual(1000);
+        expect(res.body.data.length).toEqual(100);
+      });
+  });
+});
 
 // DELETE +++++++++++++++++++++++++++
 describe('DELETE /api/books/:id', () => {
@@ -126,5 +138,4 @@ describe('DELETE /api/books/:id', () => {
         });
     });
   });
-
 });
