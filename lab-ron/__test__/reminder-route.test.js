@@ -47,7 +47,7 @@ describe('/api/reminders', () => {
       return superagent.post(`${apiURL}/api/reminders`)
         .send(tempReminder)
         .then(res => {
-          console.log('rest.body', res.body);
+          // console.log('rest.body', res.body);
           expect(res.status).toEqual(200);
           expect(res.body.timestamp).toBeTruthy();
           expect(res.body.task).toEqual(tempReminder.task);
@@ -87,7 +87,6 @@ describe('/api/reminders', () => {
 
   describe('DELETE /api/reminders:id', () => {
     test('should respond with a 204', () => {
-      // put data in the db to delete
       return reminderMockCreate()
         .then(reminder => {
           return superagent.delete(`${apiURL}/api/reminders/${reminder._id}`);
@@ -114,12 +113,11 @@ describe('/api/reminders', () => {
         .then(reminder => {
           tempReminder = reminder;
           return superagent.put(`${apiURL}/api/reminders/${reminder._id}`)
-            .send({ title: 'cool beans' });
+            .send({ task: 'get eggs' });
         })
         .then(res => {
           expect(res.status).toEqual(200);
-          expect(res.body.title).toEqual('cool beans');
-          expect(res.body.content).toEqual(tempReminder.content);
+          expect(res.body.task).toEqual('get eggs');
           expect(res.body._id).toEqual(tempReminder._id.toString());
         });
     });
