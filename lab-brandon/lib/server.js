@@ -11,6 +11,9 @@ const app = express();
 let isOn = false;
 let http = null;
 
+// register middleware
+app.use(require('./logger-middleware.js'));
+
 // register routes
 app.use(require('../route/book-router.js'));
 
@@ -18,6 +21,9 @@ app.use(require('../route/book-router.js'));
 app.all('*', (req, res) => {
   res.sendStatus(404);
 });
+
+// register error handler
+app.use(require('./error-middleware.js'));
 
 module.exports = {
   start: () => {
