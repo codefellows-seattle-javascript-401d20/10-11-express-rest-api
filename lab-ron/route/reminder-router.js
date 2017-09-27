@@ -9,10 +9,10 @@ const reminderRouter = module.exports = new Router();
 
 reminderRouter.post('/api/reminders', jsonParser, (req, res, next) => {
   if (!req.body.task)
-    next(httpErrors(400, 'title and content are required'));
+    return next(httpErrors(400, 'task is required'));
 
   new Reminder(req.body).save()
-    .then(reminder => res.json(reminder)) // ask about .json()
+    .then(reminder => res.json(reminder))
     .catch(next);
 });
 
