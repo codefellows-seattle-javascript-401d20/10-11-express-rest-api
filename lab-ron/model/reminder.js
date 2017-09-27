@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const reminderSchema = mongoose.Schema({
   task: { type: String, required: true },
   done: { type: Boolean, required: true, default: false },
-  priority: { type: String, required: false },
+  priority: { type: Number, required: false },
   timestamp: { type: Date, default: () => new Date() },
 });
 

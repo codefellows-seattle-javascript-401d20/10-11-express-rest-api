@@ -13,7 +13,7 @@ const apiURL = `http://localhost:${process.env.PORT}`;
 const reminderMockCreate = () => {
   return new Reminder({
     task: faker.lorem.words(3),
-    priority: 'low',
+    priority: 2,
   }).save();
 };
 
@@ -27,7 +27,7 @@ describe('/api/reminders', () => {
     test('should respond with a 400 status', () => {
       let tempReminder = {
         // task: faker.lorem.words(3),
-        priority: 'low',
+        priority: 2,
       };
 
       return superagent.post(`${apiURL}/api/reminders`)
@@ -41,7 +41,7 @@ describe('/api/reminders', () => {
     test('should respond with a reminder and a 200 status', () => {
       let tempReminder = {
         task: faker.lorem.words(3),
-        priority: 'low',
+        priority: 2,
       };
 
       return superagent.post(`${apiURL}/api/reminders`)
