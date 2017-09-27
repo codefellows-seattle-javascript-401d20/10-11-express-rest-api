@@ -14,7 +14,7 @@ const reminderMockCreate = () => {
   return new Reminder({
     task: faker.lorem.words(3),
     priority: 'low',
-  });
+  }).save();
 };
 
 describe('/api/reminders', () => {

@@ -25,8 +25,9 @@ reminderRouter.get('/api/reminders/:id', (req, res, next) => {
     .catch(next);
 });
 
+
 reminderRouter.delete('/api/reminders/:id', (req, res, next) => {
-  Node.findIdAndRemove(req.params.id)
+  Reminder.findByIdAndRemove(req.params.id)
     .then(reminder => {
       if (!reminder) throw httpErrors(404, 'reminder not found');
       res.sendStatus(204);
@@ -34,9 +35,9 @@ reminderRouter.delete('/api/reminders/:id', (req, res, next) => {
     .catch(next);
 });
 
-reminderRouter.put('/api/reminders/:id', jsonParser, (req, res next) => {
-  let options = { runValidators: true, new: true }
-  Note.findByIdAndUpdate(req.params.id, req.body, options)
+reminderRouter.put('/api/reminders/:id', jsonParser, (req, res, next) => {
+  let options = { runValidators: true, new: true };
+  Reminder.findByIdAndUpdate(req.params.id, req.body, options)
     .then(reminder => {
       if (!reminder) throw httpErrors(404, 'reminder not found');
       res.json(reminder);
