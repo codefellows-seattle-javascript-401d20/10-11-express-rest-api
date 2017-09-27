@@ -79,7 +79,7 @@ describe('/api/videogames', () => {
         });
     });
 
-    test.only('should respond with an array of all videogames and 200 status', () => {
+    test('should respond with an array of all videogames and 200 status', () => {
       return videogameMockMany(100)
         .then(() => {
           return superagent.get(`${apiURL}/api/videogames`);
