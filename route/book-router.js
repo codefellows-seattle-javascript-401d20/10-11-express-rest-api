@@ -18,7 +18,7 @@ bookRouter.post('/api/books', jsonParser, (req, res, next) => {
   // create a book using the parsed body
   // and respond to the client
   if(!req.body.title || !req.body.author || !req.body.description)
-    next(httpErrors(400, 'title, author, and description are required'));
+    return next(httpErrors(400, 'title, author, and description are required'));
 
   new Book(req.body).save()
     .then(book => res.json(book))
