@@ -1,6 +1,5 @@
 'use strict';
 
-// mock env
 process.env.PORT = 7000;
 process.env.MONGODB_URI = 'mongodb://localhost/testing';
 
@@ -99,8 +98,9 @@ describe('/api/books', () => {
   });
 
   describe('DELETE /api/books/:id', () => {
+    // DELETE: test 204, it should contain a 204 status code
+    // with no content in the body if no id in query string
     test('should respond with a 204', () => {
-      // put data in db to delete
       return bookMockCreate()
         .then(book => {
           return superagent.delete(`${apiURL}/api/books/${book._id}`);
@@ -110,6 +110,8 @@ describe('/api/books', () => {
         });
     });
 
+    // DELETE: test 404, it should respond with a 404 status code
+    // if a resource with the requested id does not exist
     test('should respond with a 404', () => {
       return superagent.delete(`${apiURL}/api/books/hahaha`)
         .then(Promise.reject)
@@ -117,9 +119,21 @@ describe('/api/books', () => {
           expect(res.status).toEqual(404);
         });
     });
+
+    // DELETE: test 400, it should respond with a 400 status code
+    // if query lacks an id
+    test('should respond with a 400', () => {
+      return superagent.delete(`${apiURL}/api/books/`)
+        .then(Promise.reject)
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+    });
   });
 
   describe('GET /api/books', () => {
+    // GET: test 200, it should contain a 200 status code
+    // and an array of all my resources
     test('should return 100 books', () => {
       return mockManyBooks(1000)
         .then(tempBooks => {

@@ -1,22 +1,14 @@
 'use strict';
 
-// npm dependencies
 const {Router} = require('express');
 const httpErrors = require('http-errors');
 const jsonParser = require('body-parser').json();
 
-// app dependencies
 const Book = require('../model/book.js');
-// module interface
 const bookRouter = module.exports = new Router();
 
 // POST /api/<resource-name>
-// pass data as stringifed JSON in the body of a POST request to create a new resource
-// on success respond with a 200 status code and the created book
-// on failure due to a bad request send a 400 status code
 bookRouter.post('/api/books', jsonParser, (req, res, next) => {
-  // create a book using the parsed body
-  // and respond to the client
   if(!req.body.title || !req.body.author || !req.body.description)
     return next(httpErrors(400, 'title, author, and description are required'));
 
@@ -25,10 +17,7 @@ bookRouter.post('/api/books', jsonParser, (req, res, next) => {
     .catch(next);
 });
 
-// GET /api/<resource-name> and GET /api/<resource-name>?id={id}
-// with no id in the query string it should respond with an array of all of your resources
-// with an id in the query string it should respond with the details of a specifc resource (as JSON)
-// if the id is not found respond with a 404
+// GET /api/<resource-name>
 bookRouter.get('/api/books/:id', (req, res, next) => {
   Book.findById(req.params.id)
     .then(book => {
@@ -39,11 +28,7 @@ bookRouter.get('/api/books/:id', (req, res, next) => {
     .catch(next);
 });
 
-// DELETE /api/<resource-name?id={id}>
-// the route should delete a book with the given id
-// on success this should return a 204 status code with no content in the body
-// on failure due to lack of id in the query respond with a 400 status code
-// on failure due to a resouce with that id not existing respond with a 404 status code
+// DELETE /api/<resource-name>?id={id}
 bookRouter.delete('/api/books/:id', (req, res, next) => {
   Book.findByIdAndRemove(req.params.id)
     .then(book => {
@@ -53,6 +38,13 @@ bookRouter.delete('/api/books/:id', (req, res, next) => {
     .catch(next);
 });
 
+// DELETE /api/<resource-name>
+bookRouter.delete('/api/books/', (req, res, next) => {
+  if(!req.params.id)
+    return next(httpErrors(400, 'id is required'));
+});
+
+// GET /api/<resource-name>
 bookRouter.get('/api/books', (req, res, next) => {
   let {page='0'} = req.query;
   page = Number(page);
