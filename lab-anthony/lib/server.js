@@ -35,7 +35,7 @@ module.exports = {
   stop: () => {
     return new Promise((resolve, reject) => {
       if(!isOn)
-        return reject(new Error('__SERVER_ERROR__ server is allready off'));
+        return reject(new Error('__SERVER_ERROR__ server is already off'));
       if(!http)
         return reject(new Error('__SERVER_ERROR__ there is no server to close'));
       http.close(() => {
